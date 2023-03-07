@@ -4,5 +4,7 @@ relative_links:
   enabled: true
   collections: true
 include:
+  - docs/*.md
   - README.md
-  - docs/day*.md
+
+theme: jekyll-theme-tactile

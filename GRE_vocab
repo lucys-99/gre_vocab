@@ -33,10 +33,10 @@ def generate_schedule(v:pd.DataFrame, limit:int = 150):
 
 def export_markdown(exp_df:list):
     for i in range(len(exp_df)):
-        fileNm = "docs/exp" + str(i) + ".md"
+        fileNm = "docs/day" + str(i) + ".md"
         with open(fileNm, "w") as f:
             f.write("### day " + str(i) + "\n")
-            f.write(exp_df[i].to_markdown())
+            f.write(exp_df[i][['Word', 'Paraphrase (w/ POS)', 'Paraphrase (English)', 'rpt']].to_markdown())
             f.close()
     return None
 
@@ -50,7 +50,7 @@ def define_speed( v:pd.DataFrame, spd:int = 3):
 def main():
 
     v = pd.read_excel("3000.xlsx", engine='openpyxl', usecols=[8, 13, 14])
-    # print(v.columns)
+    print(v.columns)
     spd = 3
     limit = 200
     v = define_speed(v, spd)

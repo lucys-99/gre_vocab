@@ -33,7 +33,7 @@ def generate_schedule(v:pd.DataFrame, limit:int = 150):
 
 def export_markdown(exp_df:list):
     for i in range(len(exp_df)):
-        fileNm = "exp" + str(i) + ".md"
+        fileNm = "docs/exp" + str(i) + ".md"
         with open(fileNm, "w") as f:
             f.write("### day " + str(i) + "\n")
             f.write(exp_df[i].to_markdown())

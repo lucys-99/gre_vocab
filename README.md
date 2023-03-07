@@ -1,4 +1,5 @@
 # GRE VOCAB SCHEDULE: 
+https://lucys-99.github.io/gre_vocab/ 
 * [day0](./docs/day0.md)
 * [day1](./docs/day1.md)
 * [day2](./docs/day2.md)

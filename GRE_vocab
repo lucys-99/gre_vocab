@@ -1,0 +1,63 @@
+import pandas as pd
+import numpy as np
+
+
+from enum import Enum
+ 
+
+class Ebbinghaus(Enum):
+    # to review in # minutes
+    r1 = 1
+    r2 = 5
+    r3 = 18
+    r4 = 24*60
+    r5 = 7*24*60
+    r6 = 30*24*60
+
+def generate_schedule(v:pd.DataFrame, limit:int = 150):
+
+    to_melt = [e.name for e in Ebbinghaus]
+    to_melt.append('r0')
+    m = pd.melt(v, id_vars=['Word', 'Paraphrase (w/ POS)', 'Paraphrase (English)'], value_vars=to_melt,var_name='rpt', value_name='rpt_tm')
+    m = m.sort_values('rpt_tm').reset_index(drop = True)
+    m['min'] = m['rpt_tm']/60
+    m['day'] = m['rpt_tm']/60/24
+    m = m.round(0)
+
+    exp = []
+    i = 0
+    while (i<m.index.max()):
+        exp.append(m.iloc[i:i+limit,:])
+        i += limit
+    return exp
+
+def export_markdown(exp_df:list):
+    for i in range(len(exp_df)):
+        fileNm = "exp" + str(i) + ".md"
+        with open(fileNm, "w") as f:
+            f.write("### day " + str(i) + "\n")
+            f.write(exp_df[i].to_markdown())
+            f.close()
+    return None
+
+
+def define_speed( v:pd.DataFrame, spd:int = 3):
+    v["r0"] = v.index*spd
+    for e in Ebbinghaus:
+        v[e.name] = v["r0"] + e.value * 60
+    return v
+
+def main():
+
+    v = pd.read_excel("3000.xlsx", engine='openpyxl', usecols=[8, 13, 14])
+    # print(v.columns)
+    spd = 3
+    limit = 200
+    v = define_speed(v, spd)
+    exp_df = generate_schedule(v, limit)
+    export_markdown(exp_df)
+
+if __name__ == "__main__" :
+    main()
+
+    
